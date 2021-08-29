@@ -1,0 +1,379 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace.SetFirewall"
+    xmlns:Domain="clr-namespace:SetFirewall.Domain" x:Name="ucMain"
+    x:Class="SetFirewall.Home"
+    mc:Ignorable="d"
+    d:DesignHeight="500"
+    d:DesignWidth="1200" Loaded="ucMain_Loaded">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+                <!-- throw in some extra colour for our floating action button -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.Named.Primary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Domain:DialogsViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Source="/Images/System_Security_Firewall_ON_Icon_256.png"
+                Stretch="Uniform"
+                Width="100"
+                Height="100"/>
+
+            <StackPanel
+                Grid.Column="1"
+                Margin="24 0 0 0"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                    TextWrapping="Wrap"
+                    FontFamily="Fonts/#Dosis"
+                    FontWeight="Bold"
+                    Text="방화벽 제어 프로그램"/>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Margin="5,0,0,0" x:Name="togUseFirewall" Grid.Column="0" Grid.ColumnSpan="5"   
+                                  Width="auto" Height="40" Cursor="Hand"
+                                  IsChecked="False" HorizontalAlignment="Left" Unchecked="togUseFirewall_Unchecked" Checked="togUseFirewall_Checked">
+                        <ToggleButton.Style>
+                            <Style TargetType="{x:Type ToggleButton}" 
+                                   BasedOn="{StaticResource MaterialDesignSwitchAccentToggleButton}">
+
+                                <!--<Setter Property="Content" Value="Hide" />-->
+
+                                <!--<Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        -->
+                                <!--<Setter TargetName="txtUseFirewall" Property="Test" Value="test"/>-->
+                                <!--<Setter Property="{Binding ElementName=txtUseFirewall, Path=Content}" Value="Test"/>-->
+                                <!--
+                                    </Trigger>
+                                </Style.Triggers>-->
+                            </Style>
+                        </ToggleButton.Style>
+
+                        <materialDesign:ToggleButtonAssist.OnContent>
+                            <materialDesign:PackIcon Kind="Pin" />
+                        </materialDesign:ToggleButtonAssist.OnContent>
+
+                        <materialDesign:PackIcon Kind="Pin" RenderTransformOrigin=".5,.5">
+                            <materialDesign:PackIcon.RenderTransform>
+                                <RotateTransform Angle="45" />
+                            </materialDesign:PackIcon.RenderTransform>
+                        </materialDesign:PackIcon>
+
+                    </ToggleButton>
+                    <TextBlock x:Name="txtUseFirewall" Grid.Column="1" Grid.ColumnSpan="2"  
+                               FontFamily="Fonts/#Dosis" FontSize="17" 
+                               FontWeight="Bold" VerticalAlignment="Center"
+                               HorizontalAlignment="Left" Cursor="Hand"
+                               Margin="3,0,0,0" PreviewMouseDown="txtUseFirewall_PreviewMouseDown">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Text" Value="방화벽 설정"/>
+                                <Setter Property="Foreground" Value="ForestGreen"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, ElementName=togUseFirewall}" Value="False">
+                                        <Setter Property="Foreground" Value="#FC6586"/>
+                                        <Setter Property="Text" Value="방화벽 해제"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <!--<Button
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                    CommandParameter="{x:Static Dock.Left}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Binoculars"/>
+                        <TextBlock Margin="8 0 0 0" Text="EXPLORE"/>
+                    </StackPanel>
+                </Button>-->
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Margin="10 0 0 10">
+            <Grid Margin="0,0,40,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--<TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="20, 0, 0, 0"
+                           TextWrapping="Wrap" FontFamily="Fonts/#Dosis" FontWeight="Bold" Text="Inbound"/>-->
+                <GroupBox Grid.Column="0" Grid.Row="1" Header="Inbound" 
+                          Width="Auto" Margin="10 10 10 10" Height="Auto"
+                          Style="{DynamicResource MaterialDesignCardGroupBox}"
+                          materialDesign:ColorZoneAssist.Mode="PrimaryMid">
+                    <!--materialDesign:ColorZoneAssist.Mode="SecondaryMid">-->
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArchiveArrowDownOutline" Height="24" Width="32" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Fonts/#Dosis"
+                                           FontSize="18" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" HorizontalAlignment="Left"/>
+                                <Button x:Name="btnInAdd" Style="{StaticResource MaterialDesignFlatAccentBgButton}" 
+                                        Height="28" Width="52"
+                                        Margin="300 0 0 0" HorizontalAlignment="Right" 
+                                        FontFamily="Fonts/#Dosis" FontWeight="Bold">
+                                    <materialDesign:PackIcon Kind="DatabaseAdd" Width="42" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Button>
+                                <Button x:Name="btnInRemove" Style="{StaticResource MaterialDesignFlatAccentBgButton}" 
+                                        Height="28" Width="52"
+                                        Margin="5 0 0 0" HorizontalAlignment="Right" 
+                                        FontFamily="Fonts/#Dosis" FontWeight="Bold" Cursor="Hand" Command="{Binding RunExtendedDialogCommand, Mode=OneWay}">
+                                    <Button.DataContext>
+                                        <Domain:DialogsViewModel/>
+                                    </Button.DataContext>
+                                    <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
+                                    <!--<Button.CommandParameter>
+                                        <system:DateTime>1966-JUL-30</system:DateTime>
+                                    </Button.CommandParameter>-->
+                                    <materialDesign:PackIcon Kind="DatabaseMinus" Width="42" Height="24"  
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center" >                                        
+                                    </materialDesign:PackIcon>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+
+                    <!--카드 1 시작-->
+                    <materialDesign:Card  Width="Auto" Margin="10 10 10 10" Height="Auto">
+                        <DataGrid x:Name="dataInbound" ItemsSource="{Binding Items1}" CanUserAddRows="False" AutoGenerateColumns="False" 
+                                  HeadersVisibility="All" SelectionMode="Extended" CanUserDeleteRows="False">
+                            <DataGrid.Style>
+                                <StaticResource ResourceKey="MaterialDesignDataGrid"/>
+                            </DataGrid.Style>
+                            <DataGrid.Columns>
+                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+                                    <DataGridCheckBoxColumn.Header>
+                                        <Border Background="Transparent">
+                                            -->
+                                <!--<CheckBox IsChecked="{Binding Data.IsAllItems1Selected, Source={StaticResource DataContextProxy}}" />-->
+                                <!--
+                                        </Border>
+                                    </DataGridCheckBoxColumn.Header>
+                                    <DataGridCheckBoxColumn.HeaderStyle>
+                                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                        </Style>
+                                    </DataGridCheckBoxColumn.HeaderStyle>
+                                </DataGridCheckBoxColumn>-->
+                                <DataGridTextColumn Binding="{Binding In_Name}" Header="Name" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True" />
+                                <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
+                                <materialDesign:DataGridTextColumn Binding="{Binding In_Program}" Header="Program" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"/>
+                                <!-- set a max length to get an indicator in the editor -->
+                                <DataGridTextColumn Binding="{Binding In_Protocol}" Header="Protocol" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True"/>
+                                <materialDesign:DataGridTextColumn Binding="{Binding In_LocalPort}" Header="LocalPort" Width="120"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True">
+                                    <materialDesign:DataGridTextColumn.HeaderStyle>
+                                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Text="{Binding}" TextAlignment="Right" />
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </materialDesign:DataGridTextColumn.HeaderStyle>
+                                    <materialDesign:DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                        </Style>
+                                    </materialDesign:DataGridTextColumn.ElementStyle>
+                                </materialDesign:DataGridTextColumn>
+                                <!-- use custom combo box column to get better combos. Use ItemsSourceBinding as your binding template to be applied to each combo -->
+                                <materialDesign:DataGridTextColumn Binding="{Binding In_RemotePort}"  Header="RemotePort" Width="100" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </materialDesign:Card>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Grid.Row="1" Header="Outbound" 
+                          Width="Auto" Margin="10 10 10 10" Height="Auto"
+                          Style="{DynamicResource MaterialDesignCardGroupBox}"
+                          materialDesign:ColorZoneAssist.Mode="PrimaryMid">
+                    <!--materialDesign:ColorZoneAssist.Mode="SecondaryMid">-->
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ArchiveArrowUpOutline" Height="24" Width="32" VerticalAlignment="Center" />
+                                <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Fonts/#Dosis"
+                                           FontSize="18" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <!--카드2 시작-->
+                    <materialDesign:Card Width="Auto" Margin="10" Height="Auto">
+                        <Grid VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon
+                                Kind="Github"
+                                Width="160"
+                                Height="160"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Column="1">
+                                <TextBlock
+                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                    Margin="16 16 16 8"
+                                    Text="Open Source"/>
+
+                                <TextBlock
+                                    TextWrapping="Wrap"
+                                    Margin="16 0 16 8"
+                                    Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                    VerticalAlignment="Top"
+                                    Text="This project is completely open source. If you like it and want to say thanks you could hit the GitHub Star button, tweet or post about it, or tell your mum about it!"/>
+                            </StackPanel>
+
+                            <Border
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                BorderThickness="0 1 0 0"
+                                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                Padding="8">
+                                <DockPanel>
+                                    <Button
+                                        Style="{DynamicResource MaterialDesignFlatButton}" 
+                                        DockPanel.Dock="Right"
+                                        x:Name="DonateButton"
+                                        Click="DonateButton_OnClick">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Gift"/>
+                                            <TextBlock
+                                                Margin="8 0 0 0"
+                                                VerticalAlignment="Center"
+                                                Text="Donate"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <TextBlock
+                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                        TextWrapping="Wrap"
+                                        Margin="16"
+                                        VerticalAlignment="Center"
+                                        Text="Feel like you want to make a donation?  It would be gratefully received.  Click the button to donate via Open Collective."/>
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </materialDesign:Card>
+                </GroupBox>
+
+            </Grid>
+        </ScrollViewer>
+
+        <materialDesign:PopupBox
+            Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="32"
+            Grid.Row="1">
+            <StackPanel>
+                <Button
+                    ToolTip="GitHub"
+                    Click="GitHubButton_OnClick"
+                    Content="{materialDesign:PackIcon Kind=Github, Size=20}"/>
+
+                <Button
+                    ToolTip="Twitter"
+                    Click="TwitterButton_OnClick"
+                    Background="{DynamicResource PrimaryHueMidBrush}"
+                    Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                    Content="{materialDesign:PackIcon Kind=Twitter, Size=20}"/>
+
+                <Button
+                    ToolTip="Chat"
+                    Click="ChatButton_OnClick"
+                    Content="{materialDesign:PackIcon Kind=Message, Size=20}">
+                    <!-- mix up the colours by bringing in a named palette (see merged dictionaries at top) -->
+                    <Button.Background>
+                        <SolidColorBrush Color="{StaticResource GreenPrimary500}"/>
+                    </Button.Background>
+
+                    <Button.Foreground>
+                        <SolidColorBrush Color="{StaticResource GreenPrimary500Foreground}"/>
+                    </Button.Foreground>
+                </Button>
+
+                <Button
+                    ToolTip="Email"
+                    Click="EmailButton_OnClick"
+                    Background="{DynamicResource SecondaryHueMidBrush}"
+                    Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
+                    Content="{materialDesign:PackIcon Kind=Email, Size=20}"/>
+
+                <Button
+                    ToolTip="Feel like you want to make a donation?  It would be gratefully received.  Click the button to donate via Pledgie." 
+                    Click="DonateButton_OnClick"
+                    Content="{materialDesign:PackIcon Kind=Gift, Size=20}">
+                    <Button.Background>
+                        <SolidColorBrush Color="{StaticResource GreenPrimary200}"/>
+                    </Button.Background>
+
+                    <Button.Foreground>
+                        <SolidColorBrush Color="{StaticResource GreenPrimary200Foreground}"/>
+                    </Button.Foreground>
+                </Button>
+            </StackPanel>
+        </materialDesign:PopupBox>
+    </Grid>
+</UserControl>
