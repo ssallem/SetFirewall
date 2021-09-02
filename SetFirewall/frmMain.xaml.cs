@@ -93,5 +93,10 @@ namespace SetFirewall
             process.WaitForExit();
             process.Close();
         }
+
+        private void DialogHost_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+            var test = eventArgs.Parameter;
+        }
     }
 }

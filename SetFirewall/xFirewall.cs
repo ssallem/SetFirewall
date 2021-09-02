@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -29,10 +30,60 @@ namespace SetFirewall
         }
 
         #region 방화벽 설정 : CMD 방식
-        private readonly string FirewallCmd = "netsh firewall add allowedprogram \"{1}\" \"{0}\" ENABLE"; 
+        public enum RuleString
+        {
+            ADD_PROGRAM = 0,
+            ADD_PORT = 1,
+            DEL_PROGRAM = 2,
+            DEL_PORT = 3,
+            UPDATE_ENABLE = 4,
+        }
+
+        private readonly string FirewallCmd = "netsh firewall add allowedprogram \"{1}\" \"{0}\" ENABLE";
         private readonly string AdvanceFirewallCmd = "netsh advfirewall firewall add rule name=\"{0}\" dir=in action=allow program=\"{1}\" enable=yes";
+
+        private readonly string AddRuleProgram = "netsh advfirewall firewall add rule name=\"{0}\" dir={1} action=allow program=\"{2}\" enable=yes profile=any";
+        private readonly string AddRulePort = "netsh advfirewall firewall add rule name=\"{0}\" dir={1} action=allow protocol={2} localport={3}";
+        private readonly string DeleteRuleProgram = "netsh advfirewall firewall delete rule name=\"{0}\" dir={1} program=\"{2}\"";
+        private readonly string DeleteRulePort = "netsh advfirewall firewall delete rule name=\"{0}\" dir={1} protocol=\"{2}\" localport={3}";
         private readonly string FirewallEnable = "netsh advfirewall set allprofile state {0}";
         private readonly int VistaMajorVersion = 6;
+        private readonly string UpdateRuleEnable = "netsh advfirewall firewall set rule name=\"{0}\" dir={1} new enable={2}";
+
+        public bool ApplyRules(RuleString rule, params string[] paramValue)
+        {
+            bool isOk = false;
+            try
+            {
+                string sendMsg = "";
+                switch (rule)
+                {
+                    case RuleString.ADD_PROGRAM:
+                        sendMsg = String.Format(AddRuleProgram, paramValue[0], paramValue[1], paramValue[2]);
+                        break;
+                    case RuleString.ADD_PORT:
+                        sendMsg = String.Format(AddRulePort, paramValue[0], paramValue[1], paramValue[2], paramValue[3]);
+                        break;
+                    case RuleString.DEL_PROGRAM:
+                        sendMsg = String.Format(DeleteRuleProgram, paramValue[0], paramValue[1], paramValue[2]);
+                        break;
+                    case RuleString.DEL_PORT:
+                        sendMsg = String.Format(DeleteRulePort, paramValue[0], paramValue[1], paramValue[2], paramValue[3]);
+                        break;
+                    case RuleString.UPDATE_ENABLE:
+                        sendMsg = String.Format(UpdateRuleEnable, paramValue[0], paramValue[1], paramValue[2]);
+                        break;
+                    default:
+                        break;
+                }
+                isOk = xCommon.ExcuteCmd(sendMsg);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return isOk;
+        }
 
         /// <summary>
         /// 방화벽 사용 설정/해제
@@ -41,6 +92,7 @@ namespace SetFirewall
         /// <returns></returns>
         public bool FirewallOnOff(bool isOn)
         {
+            bool isOk = false;
             try
             {
                 string stateString = "off";
@@ -48,36 +100,14 @@ namespace SetFirewall
                 {
                     stateString = "on";
                 }
-
-                // Start to register
                 string command = String.Format(FirewallEnable, stateString);
-                System.Console.WriteLine(command);
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = true;
-                startInfo.FileName = "cmd.exe";
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardInput = true;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.RedirectStandardError = true;
-
-                Process process = new Process();
-                process.EnableRaisingEvents = false;
-                process.StartInfo = startInfo;
-                process.Start();
-                process.StandardInput.Write(command + Environment.NewLine);
-                process.StandardInput.Close();
-
-                string result = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
-
-                process.WaitForExit();
-                process.Close();
+                isOk = xCommon.ExcuteCmd(command);
             }
             catch (Exception)
             {
                 return false;
             }
-            return true;
+            return isOk;
         }
 
         /// <summary>
@@ -183,7 +213,93 @@ namespace SetFirewall
         /// <summary>
         /// C:\Windows\System32\FirewallAPI.dll 참조
         /// </summary>
-        public void GetFirewallInfo()
+        public ObservableCollection<xFwRules> GetAllRules()
+        {
+            ObservableCollection<xFwRules> fwInbounds = new ObservableCollection<xFwRules>();
+            Type tNetFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2");
+            INetFwPolicy2 fwPolicy2 = (INetFwPolicy2)Activator.CreateInstance(tNetFwPolicy2);
+
+            foreach (INetFwRule rule in fwPolicy2.Rules)
+            {
+                xFwRules fwInbound = new xFwRules();
+                fwInbound.RuleName = rule.Name;
+                fwInbound.RuleProgram = rule.ApplicationName;
+                fwInbound.Protocol = GetRuleProtocol(rule.Protocol);
+                fwInbound.LocalPort = rule.LocalPorts;
+                fwInbound.RemotePort = rule.RemotePorts;
+                fwInbound.IsEnabled = rule.Enabled;
+                fwInbound.EnableName = rule.Enabled == true ? "사용" : "중지";
+                fwInbound.Direction = rule.Direction;
+                fwInbound.DirectionName = GetDirectionName(rule.Direction);
+                fwInbound.Action = rule.Action;
+                fwInbound.ActionName = GetRuleActionName(rule.Action);
+
+                fwInbounds.Add(fwInbound);             
+            }
+            return fwInbounds;
+        }
+
+        private string GetDirectionName(NET_FW_RULE_DIRECTION_ direction)
+        {
+            string returnValue = "";
+            switch (direction)
+            {
+                case NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN:
+                    returnValue = "in";
+                    break;
+                case NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT:
+                    returnValue = "out";
+                    break;
+                case NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_MAX:
+                    returnValue = "max";
+                    break;
+                default:
+                    break;
+            }
+            return returnValue;
+        }
+
+        private string GetRuleActionName(NET_FW_ACTION_ action)
+        {
+            string returnValue = "";
+            switch (action)
+            {
+                case NET_FW_ACTION_.NET_FW_ACTION_BLOCK:
+                    returnValue = "차단";
+                    break;
+                case NET_FW_ACTION_.NET_FW_ACTION_ALLOW:
+                    returnValue = "허용";
+                    break;
+                case NET_FW_ACTION_.NET_FW_ACTION_MAX:
+                    returnValue = "최대";
+                    break;
+                default:
+                    break;
+            }
+            return returnValue;
+        }
+
+        private string GetRuleProtocol(int protocol)
+        {
+            string returnValue = "";
+            switch (protocol)
+            {
+                case 1: returnValue = "ICMPv4"; break;
+                case 2: returnValue = "ICMPv6"; break;
+                case 6: returnValue = "TCP"; break;
+                case 17: returnValue = "UDP"; break;
+                case 47: returnValue = "GRE"; break;
+                case 256: returnValue = "모두"; break;
+                default:
+                    break;
+            }
+            return returnValue;
+        }
+
+        /// <summary>
+        /// C:\Windows\System32\FirewallAPI.dll 참조
+        /// </summary>
+        public void AddInboundRule()
         {
             Type tNetFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2");
             INetFwPolicy2 fwPolicy2 = (INetFwPolicy2)Activator.CreateInstance(tNetFwPolicy2);
@@ -191,6 +307,8 @@ namespace SetFirewall
             // Let's create a new rule
             INetFwRule2 inboundRule = (INetFwRule2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
             inboundRule.Enabled = true;
+
+            var currentProfiles = fwPolicy2.CurrentProfileTypes;
 
             //Allow through firewall
             inboundRule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;

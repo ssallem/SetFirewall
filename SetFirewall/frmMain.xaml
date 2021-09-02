@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SetFirewall"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="SetFirewall.frmMain"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:system="clr-namespace:System;assembly=mscorlib" x:Class="SetFirewall.frmMain"
         mc:Ignorable="d"        
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Title="방화벽 제어" Height="550" Width="900" 
@@ -30,8 +30,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid x:Name="gridTop" Background="#0F0F2D" 
-              Grid.ColumnSpan="2"
-              MouseDown="gridTop_MouseDown">
+            Grid.ColumnSpan="2"
+            MouseDown="gridTop_MouseDown">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -51,57 +51,61 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="차량 조회"
-                       Foreground="White"
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontFamily="Fonts/#Dosis"
-                       FontWeight="Medium"/>
+                    Foreground="White"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontFamily="Fonts/#Dosis"
+                    FontWeight="Medium"/>
             <TextBlock Text="통계"
-                       Foreground="LightGray"
-                       Grid.Column="2"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontFamily="Fonts/#Dosis"
-                       FontWeight="Medium"/>
+                    Foreground="LightGray"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontFamily="Fonts/#Dosis"
+                    FontWeight="Medium"/>
             <TextBlock Text="환경 설정"
-                       Foreground="LightGray"
-                       Grid.Column="3"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       FontFamily="Fonts/#Dosis"
-                       FontWeight="Medium"/>
+                    Foreground="LightGray"
+                    Grid.Column="3"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontFamily="Fonts/#Dosis"
+                    FontWeight="Medium"/>
         </Grid>
 
         <StackPanel Grid.Row="1"
-                    VerticalAlignment="Top"
-                    Margin="40,17,40,0" Height="298">
-
+                VerticalAlignment="Top"
+                Margin="40,17,40,0" Height="298">
             <StackPanel>
                 <StackPanel Orientation="Horizontal"
-                            Margin="0,0,0,20">
+                        Margin="0,0,0,20">
+
+                    <Button x:Name="PowerButton" Foreground="White" IsEnabled="True"
+                    Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                    Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Cursor="Hand">test</Button>
+
                     <Image Width="50" Height="50"
-                           Source="Images/flame.png"
-                           RenderOptions.BitmapScalingMode="Fant"/>
+                        Source="Images/flame.png"
+                        RenderOptions.BitmapScalingMode="Fant"/>
                     <TextBlock Text="방화벽 제어 프로그램"
-                               Margin="10,0,0,0"
-                               Foreground="White"
-                               FontSize="30"
-                               FontWeight="Medium"
-                               VerticalAlignment="Center"
-                               FontFamily="Fonts/#Dosis"/>
+                            Margin="10,0,0,0"
+                            Foreground="White"
+                            FontSize="30"
+                            FontWeight="Medium"
+                            VerticalAlignment="Center"
+                            FontFamily="Fonts/#Dosis"/>
 
                 </StackPanel>
                 <TextBlock Text="Parking Guidiance System. 주차 유도 시스템. Modern UI WPF Example. Modern UI WPF Example"
-                           Foreground="White"
-                           FontSize="12"
-                           FontWeight="Medium"
-                           FontFamily="Fonts/#Dosis"
-                           TextWrapping="Wrap"
-                           Margin="0,10,0,0"/>
+                        Foreground="White"
+                        FontSize="12"
+                        FontWeight="Medium"
+                        FontFamily="Fonts/#Dosis"
+                        TextWrapping="Wrap"
+                        Margin="0,10,0,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"
-                        Margin="0,10,0,0">
+                    Margin="0,10,0,0">
                 <Grid Width="370" Height="40">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -115,22 +119,22 @@
                     </Grid.ColumnDefinitions>
 
                     <ToggleButton Margin="5,0,0,0" Name="togUseFirewall" Grid.Column="0" Grid.ColumnSpan="5"   
-                                  Width="auto" Height="40" Cursor="Hand"
-                                  IsChecked="False" HorizontalAlignment="Left">
+                                Width="auto" Height="40" Cursor="Hand"
+                                IsChecked="False" HorizontalAlignment="Left">
                         <ToggleButton.Style>
                             <Style TargetType="{x:Type ToggleButton}" 
-                                   BasedOn="{StaticResource MaterialDesignSwitchAccentToggleButton}">
+                                BasedOn="{StaticResource MaterialDesignSwitchAccentToggleButton}">
 
                                 <!--<Setter Property="Content" Value="Hide" />-->
 
                                 <!--<Style.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        -->
+                                <Trigger Property="IsChecked" Value="True">
+                                    -->
                                 <!--<Setter TargetName="txtUseFirewall" Property="Test" Value="test"/>-->
                                 <!--<Setter Property="{Binding ElementName=txtUseFirewall, Path=Content}" Value="Test"/>-->
                                 <!--
-                                    </Trigger>
-                                </Style.Triggers>-->
+                                </Trigger>
+                            </Style.Triggers>-->
                             </Style>
                         </ToggleButton.Style>
 
@@ -145,10 +149,10 @@
 
                     </ToggleButton>
                     <TextBlock x:Name="txtUseFirewall" Grid.Column="1" Grid.ColumnSpan="2"  
-                               FontFamily="Fonts/#Dosis" FontSize="17" 
-                               FontWeight="Bold" VerticalAlignment="Center"
-                               HorizontalAlignment="Left" Cursor="Hand"
-                               Margin="3,0,0,0" PreviewMouseDown="txtUseFirewall_PreviewMouseDown">
+                            FontFamily="Fonts/#Dosis" FontSize="17" 
+                            FontWeight="Bold" VerticalAlignment="Center"
+                            HorizontalAlignment="Left" Cursor="Hand"
+                            Margin="3,0,0,0" PreviewMouseDown="txtUseFirewall_PreviewMouseDown">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Text" Value="방화벽 설정"/>
@@ -163,13 +167,13 @@
                         </TextBlock.Style>
                     </TextBlock>
                     <Button Name="btnOpenFirewall" Grid.Column="4" Grid.ColumnSpan="4" 
-                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                            Height="30" materialDesign:ButtonAssist.CornerRadius="9"       
-                            HorizontalAlignment="Left"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                            Margin="20,0,0,0" PreviewMouseDown="btnOpenFirewall_PreviewMouseDown">
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Height="30" materialDesign:ButtonAssist.CornerRadius="9"       
+                        HorizontalAlignment="Left"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Margin="20,0,0,0" PreviewMouseDown="btnOpenFirewall_PreviewMouseDown">
                         <TextBlock Text="방화벽 고급 설정" FontFamily="Fonts/#Dosis"
-                                FontWeight="Bold"/>
+                            FontWeight="Bold"/>
                     </Button>
                 </Grid>
 
@@ -178,8 +182,8 @@
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <TabControl 
-                        materialDesign:ColorZoneAssist.Mode="PrimaryMid"
-                        TabStripPlacement="Top" Background="Transparent">
+                    materialDesign:ColorZoneAssist.Mode="PrimaryMid"
+                    TabStripPlacement="Top" Background="Transparent">
                 <TabItem Background="#FFAEEA00">
                     <TabItem.Header>
                         <StackPanel Height="auto" Width="auto">
@@ -188,19 +192,19 @@
                         </StackPanel>
                     </TabItem.Header>
                     <DataGrid Background="Transparent"    
-                              Foreground="White"
-  ItemsSource="{Binding Items1}"
-  CanUserAddRows="False"
-  AutoGenerateColumns="False"
-  HeadersVisibility="All">
+                            Foreground="White"
+ItemsSource="{Binding Items1}"
+CanUserAddRows="False"
+AutoGenerateColumns="False"
+HeadersVisibility="All">
                         <DataGrid.Resources>
-                            
+
                         </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn
-      Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
-      ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-      EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+    Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+    EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
                                 <DataGridCheckBoxColumn.Header>
                                     <Border Background="Transparent">
                                         <CheckBox IsChecked="{Binding Data.IsAllItems1Selected}" />
@@ -208,66 +212,66 @@
                                 </DataGridCheckBoxColumn.Header>
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style
-          TargetType="{x:Type DataGridColumnHeader}"
-          BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-                                    <Setter Property="HorizontalContentAlignment"                                            
-            Value="Center" />
+        TargetType="{x:Type DataGridColumnHeader}"
+        BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+                                        <Setter Property="HorizontalContentAlignment"                                            
+        Value="Center" />
                                     </Style>
                                 </DataGridCheckBoxColumn.HeaderStyle>
                             </DataGridCheckBoxColumn>
                             <DataGridTextColumn
-      Binding="{Binding Code}"
-      Header="Code" Foreground="White"
-      ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+    Binding="{Binding Code}"
+    Header="Code" Foreground="White"
+    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
                             <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
                             <materialDesign:DataGridTextColumn
-      Header="Name"
-      ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+    Header="Name"
+    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                                 <materialDesign:DataGridTextColumn.Binding>
                                     <Binding
-          Path="Name">
+        Path="Name">
                                         <Binding.ValidationRules>
-                                            
+
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </materialDesign:DataGridTextColumn.Binding>
                             </materialDesign:DataGridTextColumn>
                             <!-- set a max length to get an indicator in the editor -->
                             <DataGridTextColumn
-      Header="Description"
-      ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+    Header="Description"
+    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
                                 <DataGridTextColumn.Binding>
                                     <Binding
-          Path="Description">
+        Path="Description">
                                         <Binding.ValidationRules>
-                                            
+
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                             <materialDesign:DataGridTextColumn
-      Binding="{Binding Numeric}"
-      Header="Number with long header"
-      Width="120"
-      EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
+    Binding="{Binding Numeric}"
+    Header="Number with long header"
+    Width="120"
+    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style
-          TargetType="{x:Type DataGridColumnHeader}"
-          BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+        TargetType="{x:Type DataGridColumnHeader}"
+        BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
                                         <Setter
-            Property="HorizontalContentAlignment"
-            Value="Right" />
+        Property="HorizontalContentAlignment"
+        Value="Right" />
                                         <Setter
-            Property="ContentTemplate">
+        Property="ContentTemplate">
                                             <Setter.Value>
                                                 <DataTemplate>
                                                     <TextBlock
-                  TextWrapping="Wrap"
-                  Text="{Binding}"
-                  TextAlignment="Right" />
+                TextWrapping="Wrap"
+                Text="{Binding}"
+                TextAlignment="Right" />
                                                 </DataTemplate>
                                             </Setter.Value>
                                         </Setter>
@@ -275,28 +279,28 @@
                                 </DataGridTextColumn.HeaderStyle>
                                 <DataGridTextColumn.ElementStyle>
                                     <Style
-          TargetType="{x:Type TextBlock}"
-          BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
+        TargetType="{x:Type TextBlock}"
+        BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
                                         <Setter
-            Property="HorizontalAlignment"
-            Value="Right" />
+        Property="HorizontalAlignment"
+        Value="Right" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </materialDesign:DataGridTextColumn>
                             <!-- use custom combo box column to get better combos. Use ItemsSourceBinding as your binding template to be applied to each combo -->
                             <materialDesign:DataGridComboBoxColumn
-      Header="Food with long header"
-      IsEditable="True"
-      Width="100"
-      SelectedValueBinding="{Binding Food}"
-      ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Foods}">
+    Header="Food with long header"
+    IsEditable="True"
+    Width="100"
+    SelectedValueBinding="{Binding Food}"
+    ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Foods}">
                                 <!--Setting the editing element style allows access to all of the combo box's properties
-                      <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                          <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
-                              <Setter Property="IsEditable" Value="True" />
-                          </Style>
-                      </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
-                      -->
+                    <materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type ComboBox}, ResourceId=MaterialDataGridComboBoxColumnEditingStyle}}" >
+                            <Setter Property="IsEditable" Value="True" />
+                        </Style>
+                    </materialDesign:MaterialDataGridComboBoxColumn.EditingElementStyle>
+                    -->
                             </materialDesign:DataGridComboBoxColumn>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -305,20 +309,20 @@
                     <TabItem.Header>
                         <StackPanel Height="auto" Width="auto">
                             <materialDesign:PackIcon Kind="ClockOutline" Width="24" Height="24"
-                                                     HorizontalAlignment="Center" />
+                                                    HorizontalAlignment="Center" />
                             <TextBlock Text="Recent" HorizontalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
                     <TextBlock>
-                        <Run Text="tab 2 content. Default look and behaviors." />
-                          <LineBreak />
-                          <LineBreak />
-                        <Run FontStyle="Italic">Praesent sed dui arcu. Vivamus porta auctor sagittis
-                        </Run>
+                    <Run Text="tab 2 content. Default look and behaviors." />
+                        <LineBreak />
+                        <LineBreak />
+                    <Run FontStyle="Italic">Praesent sed dui arcu. Vivamus porta auctor sagittis
+                    </Run>
                     </TextBlock>
                 </TabItem>
-                
             </TabControl>
         </Grid>
     </Grid>
+    
 </Window>

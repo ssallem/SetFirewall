@@ -48,6 +48,9 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.3.0\lib\net462\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Dragablz, Version=0.0.3.223, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.223\lib\net45\Dragablz.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -89,6 +92,7 @@
     </ApplicationDefinition>
     <Compile Include="Domain\AnotherCommandImplementation.cs" />
     <Compile Include="Domain\DialogsViewModel.cs" />
+    <Compile Include="Domain\Link.cs" />
     <Compile Include="Domain\MainWindowViewModel.cs" />
     <Compile Include="Domain\DialogYesNo.xaml.cs">
       <DependentUpon>DialogYesNo.xaml</DependentUpon>
@@ -110,7 +114,9 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="xCommon.cs" />
     <Compile Include="xFirewall.cs" />
+    <Compile Include="xFwRules.cs" />
     <Page Include="Domain\DialogYesNo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -200,6 +206,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\System_Security_Firewall_ON_Icon_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Enable_False.png" />
+    <Resource Include="Images\Enable_True.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Rule_Block.png" />
+    <Resource Include="Images\Rule_Allow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Apply_False.png" />
+    <Resource Include="Images\Apply_True.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.1.0\build\MaterialDesignThemes.targets')" />

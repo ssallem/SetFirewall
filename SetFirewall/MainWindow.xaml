@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Firewall Control System"
         AutomationProperties.Name="{Binding Title, RelativeSource={RelativeSource Self}}"
-        Height="800"
+        Height="880"
         Width="1200"
         d:DataContext="{d:DesignInstance {x:Type domain:MainWindowViewModel}}"
         Icon="/Firewall.ico">
@@ -21,21 +21,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- data template used for the dialogs example, defines a View for a ViewModel of type DateTime  -->
-            <DataTemplate DataType="{x:Type system:DateTime}">
-                <StackPanel Margin="16">
-                    <TextBlock Text="England win the World Cup:"/>
-                    <TextBlock Margin="0 8 0 0" Text="{Binding}"/>
-                    <TextBlock Margin="0 8 0 0" Text="You will never see that again."/>
-                    <Button
-                        Margin="0 8 0 0"
-                        IsDefault="True"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                        Style="{DynamicResource MaterialDesignFlatButton}"
-                        Content="AWESOME"/>
-                </StackPanel>
-            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
 

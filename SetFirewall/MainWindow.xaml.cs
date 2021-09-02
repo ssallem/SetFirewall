@@ -33,12 +33,17 @@ namespace SetFirewall
             {
                 //note you can use the message queue from any thread, but just for the demo here we 
                 //need to get the message queue from the snackbar, so need to be on the dispatcher
-                MainSnackbar.MessageQueue?.Enqueue("Welcome to Firewall Control System - Design by Material Design XAML Tookit");
+                MainSnackbar.MessageQueue?.Enqueue("방화벽 제어 프로그램 - Design by ssallem");
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            Task.Factory.StartNew(() => Thread.Sleep(5000)).ContinueWith(t =>
+            {                
+                ModifyTheme(true);
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             // DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue!);
             DataContext = new Home();
-
+            
             var paletteHelper = new PaletteHelper();
             var theme = paletteHelper.GetTheme();
 

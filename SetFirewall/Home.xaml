@@ -6,7 +6,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:local="clr-namespace.SetFirewall"
-    xmlns:Domain="clr-namespace:SetFirewall.Domain" x:Name="ucMain"
+    xmlns:Domain="clr-namespace:SetFirewall.Domain" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" x:Name="ucMain"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
     x:Class="SetFirewall.Home"
     mc:Ignorable="d"
     d:DesignHeight="500"
@@ -21,7 +22,42 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
                 <!-- throw in some extra colour for our floating action button -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Green.Named.Primary.xaml"/>
+
+                <!-- primary color -->
+                <ResourceDictionary>
+                    <!-- include your primary palette -->
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Indigo.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <!--
+                            include three hues from the primary palette (and the associated forecolours).
+                            Do not rename, keep in sequence; light to dark.
+                        -->
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary100}"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary100Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Primary500}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary500Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Primary700}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary700Foreground}"/>
+                </ResourceDictionary>
+
+                <!-- secondary colour -->
+                <ResourceDictionary>
+                    <!-- include your secondary pallette -->
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Yellow.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+
+                    <!-- include a single secondary accent color (and the associated forecolour) -->
+                    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Accent200}"/>
+                    <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource Accent200Foreground}"/>
+                </ResourceDictionary>
+
+                <!-- Include the Dragablz Material Design style -->
+                <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <!-- tell Dragablz tab control to use the Material Design theme -->
+            <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -30,7 +66,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="110"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -46,8 +82,8 @@
             <Image
                 Source="/Images/System_Security_Firewall_ON_Icon_256.png"
                 Stretch="Uniform"
-                Width="100"
-                Height="100"/>
+                Width="80"
+                Height="80"/>
 
             <StackPanel
                 Grid.Column="1"
@@ -58,7 +94,7 @@
                     TextWrapping="Wrap"
                     FontFamily="Fonts/#Dosis"
                     FontWeight="Bold"
-                    Text="방화벽 제어 프로그램"/>
+                    Text="Amano 방화벽 제어 프로그램"/>
                 <StackPanel Orientation="Horizontal">
                     <ToggleButton Margin="5,0,0,0" x:Name="togUseFirewall" Grid.Column="0" Grid.ColumnSpan="5"   
                                   Width="auto" Height="40" Cursor="Hand"
@@ -123,222 +159,62 @@
             </StackPanel>
         </Grid>
 
-        <ScrollViewer
-            Grid.Row="1"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Disabled"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Margin="10 0 0 10">
-            <Grid Margin="0,0,40,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-
-                <!--<TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="20, 0, 0, 0"
-                           TextWrapping="Wrap" FontFamily="Fonts/#Dosis" FontWeight="Bold" Text="Inbound"/>-->
-                <GroupBox Grid.Column="0" Grid.Row="1" Header="Inbound" 
-                          Width="Auto" Margin="10 10 10 10" Height="Auto"
-                          Style="{DynamicResource MaterialDesignCardGroupBox}"
-                          materialDesign:ColorZoneAssist.Mode="PrimaryMid">
-                    <!--materialDesign:ColorZoneAssist.Mode="SecondaryMid">-->
-                    <GroupBox.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ArchiveArrowDownOutline" Height="24" Width="32" VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Fonts/#Dosis"
-                                           FontSize="18" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" HorizontalAlignment="Left"/>
-                                <Button x:Name="btnInAdd" Style="{StaticResource MaterialDesignFlatAccentBgButton}" 
-                                        Height="28" Width="52"
-                                        Margin="300 0 0 0" HorizontalAlignment="Right" 
-                                        FontFamily="Fonts/#Dosis" FontWeight="Bold">
-                                    <materialDesign:PackIcon Kind="DatabaseAdd" Width="42" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Button>
-                                <Button x:Name="btnInRemove" Style="{StaticResource MaterialDesignFlatAccentBgButton}" 
-                                        Height="28" Width="52"
-                                        Margin="5 0 0 0" HorizontalAlignment="Right" 
-                                        FontFamily="Fonts/#Dosis" FontWeight="Bold" Cursor="Hand" Command="{Binding RunExtendedDialogCommand, Mode=OneWay}">
-                                    <Button.DataContext>
-                                        <Domain:DialogsViewModel/>
-                                    </Button.DataContext>
-                                    <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
-                                    <!--<Button.CommandParameter>
+        <Button x:Name="btnAdd" Height="28" Width="52"
+                ToolTip="방화벽 Rule 등록"
+                Margin="10 -10 0 0" HorizontalAlignment="Left" 
+                FontFamily="Fonts/#Dosis" FontWeight="Bold" PreviewMouseDown="btnAdd_PreviewMouseDown">
+            <materialDesign:PackIcon Kind="DatabaseAdd" Width="42" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button x:Name="btnRemove" Height="28" Width="52"
+                ToolTip="방화벽 Rule 삭제"
+                Margin="70 -10 0 0" HorizontalAlignment="Left" 
+                FontFamily="Fonts/#Dosis" FontWeight="Bold" Cursor="Hand" PreviewMouseDown="btnRemove_PreviewMouseDown">
+            <Button.CommandParameter>
+                <system:Boolean>True</system:Boolean>
+            </Button.CommandParameter>
+            <Button.DataContext>
+                <Domain:DialogsViewModel/>
+            </Button.DataContext>
+            <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
+            <!--<Button.CommandParameter>
                                         <system:DateTime>1966-JUL-30</system:DateTime>
                                     </Button.CommandParameter>-->
-                                    <materialDesign:PackIcon Kind="DatabaseMinus" Width="42" Height="24"  
-                                                             HorizontalAlignment="Center" VerticalAlignment="Center" >                                        
-                                    </materialDesign:PackIcon>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupBox.HeaderTemplate>
-
-                    <!--카드 1 시작-->
-                    <materialDesign:Card  Width="Auto" Margin="10 10 10 10" Height="Auto">
-                        <DataGrid x:Name="dataInbound" ItemsSource="{Binding Items1}" CanUserAddRows="False" AutoGenerateColumns="False" 
-                                  HeadersVisibility="All" SelectionMode="Extended" CanUserDeleteRows="False">
-                            <DataGrid.Style>
-                                <StaticResource ResourceKey="MaterialDesignDataGrid"/>
-                            </DataGrid.Style>
-                            <DataGrid.Columns>
-                                <!--<DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
-                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
-                                    <DataGridCheckBoxColumn.Header>
-                                        <Border Background="Transparent">
-                                            -->
-                                <!--<CheckBox IsChecked="{Binding Data.IsAllItems1Selected, Source={StaticResource DataContextProxy}}" />-->
-                                <!--
-                                        </Border>
-                                    </DataGridCheckBoxColumn.Header>
-                                    <DataGridCheckBoxColumn.HeaderStyle>
-                                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                        </Style>
-                                    </DataGridCheckBoxColumn.HeaderStyle>
-                                </DataGridCheckBoxColumn>-->
-                                <DataGridTextColumn Binding="{Binding In_Name}" Header="Name" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True" />
-                                <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
-                                <materialDesign:DataGridTextColumn Binding="{Binding In_Program}" Header="Program" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"/>
-                                <!-- set a max length to get an indicator in the editor -->
-                                <DataGridTextColumn Binding="{Binding In_Protocol}" Header="Protocol" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
-                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True"/>
-                                <materialDesign:DataGridTextColumn Binding="{Binding In_LocalPort}" Header="LocalPort" Width="120"
-                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True">
-                                    <materialDesign:DataGridTextColumn.HeaderStyle>
-                                        <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Right" />
-                                            <Setter Property="ContentTemplate">
-                                                <Setter.Value>
-                                                    <DataTemplate>
-                                                        <TextBlock TextWrapping="Wrap" Text="{Binding}" TextAlignment="Right" />
-                                                    </DataTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </materialDesign:DataGridTextColumn.HeaderStyle>
-                                    <materialDesign:DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignDataGridTextColumnStyle}">
-                                            <Setter Property="HorizontalAlignment" Value="Right" />
-                                        </Style>
-                                    </materialDesign:DataGridTextColumn.ElementStyle>
-                                </materialDesign:DataGridTextColumn>
-                                <!-- use custom combo box column to get better combos. Use ItemsSourceBinding as your binding template to be applied to each combo -->
-                                <materialDesign:DataGridTextColumn Binding="{Binding In_RemotePort}"  Header="RemotePort" Width="100" IsReadOnly="True"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </materialDesign:Card>
-                </GroupBox>
-
-                <GroupBox Grid.Column="1" Grid.Row="1" Header="Outbound" 
-                          Width="Auto" Margin="10 10 10 10" Height="Auto"
-                          Style="{DynamicResource MaterialDesignCardGroupBox}"
-                          materialDesign:ColorZoneAssist.Mode="PrimaryMid">
-                    <!--materialDesign:ColorZoneAssist.Mode="SecondaryMid">-->
-                    <GroupBox.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ArchiveArrowUpOutline" Height="24" Width="32" VerticalAlignment="Center" />
-                                <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" FontWeight="Bold" FontFamily="Fonts/#Dosis"
-                                           FontSize="18" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </GroupBox.HeaderTemplate>
-                    <!--카드2 시작-->
-                    <materialDesign:Card Width="Auto" Margin="10" Height="Auto">
-                        <Grid VerticalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <materialDesign:PackIcon
-                                Kind="Github"
-                                Width="160"
-                                Height="160"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-
-                            <StackPanel Grid.Column="1">
-                                <TextBlock
-                                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                                    Margin="16 16 16 8"
-                                    Text="Open Source"/>
-
-                                <TextBlock
-                                    TextWrapping="Wrap"
-                                    Margin="16 0 16 8"
-                                    Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                    VerticalAlignment="Top"
-                                    Text="This project is completely open source. If you like it and want to say thanks you could hit the GitHub Star button, tweet or post about it, or tell your mum about it!"/>
-                            </StackPanel>
-
-                            <Border
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                BorderThickness="0 1 0 0"
-                                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                Padding="8">
-                                <DockPanel>
-                                    <Button
-                                        Style="{DynamicResource MaterialDesignFlatButton}" 
-                                        DockPanel.Dock="Right"
-                                        x:Name="DonateButton"
-                                        Click="DonateButton_OnClick">
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Gift"/>
-                                            <TextBlock
-                                                Margin="8 0 0 0"
-                                                VerticalAlignment="Center"
-                                                Text="Donate"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <TextBlock
-                                        Foreground="{DynamicResource MaterialDesignBodyLight}"
-                                        TextWrapping="Wrap"
-                                        Margin="16"
-                                        VerticalAlignment="Center"
-                                        Text="Feel like you want to make a donation?  It would be gratefully received.  Click the button to donate via Open Collective."/>
-                                </DockPanel>
-                            </Border>
-                        </Grid>
-                    </materialDesign:Card>
-                </GroupBox>
-
-            </Grid>
-        </ScrollViewer>
+            <materialDesign:PackIcon Kind="DatabaseMinus" Width="42" Height="24"  
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button x:Name="btnStart" Height="28" Width="52"
+                Margin="10 60 0 0" HorizontalAlignment="Left" 
+                ToolTip="방화벽 Rule 사용"
+                FontFamily="Fonts/#Dosis" FontWeight="Bold" PreviewMouseDown="btnStart_PreviewMouseDown">
+            <materialDesign:PackIcon Kind="Fire" Width="42" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        <Button x:Name="btnStop" Height="28" Width="52"
+                Margin="70 60 0 0" HorizontalAlignment="Left" 
+                ToolTip="방화벽 Rule 중지"
+                FontFamily="Fonts/#Dosis" FontWeight="Bold" PreviewMouseDown="btnStop_PreviewMouseDown">
+            <materialDesign:PackIcon Kind="FireOff" Width="42" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Button>
+        
+        
 
         <materialDesign:PopupBox
             Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Margin="32"
-            Grid.Row="1">
+            Margin="0, 0, 12, 0"
+            Grid.Row="0" PlacementMode="BottomAndAlignCentres">
             <StackPanel>
                 <Button
                     ToolTip="GitHub"
                     Click="GitHubButton_OnClick"
                     Content="{materialDesign:PackIcon Kind=Github, Size=20}"/>
 
-                <Button
+                <!--<Button
                     ToolTip="Twitter"
                     Click="TwitterButton_OnClick"
                     Background="{DynamicResource PrimaryHueMidBrush}"
                     Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                    Content="{materialDesign:PackIcon Kind=Twitter, Size=20}"/>
+                    Content="{materialDesign:PackIcon Kind=Twitter, Size=20}"/>-->
 
                 <Button
                     ToolTip="Chat"
@@ -355,13 +231,13 @@
                 </Button>
 
                 <Button
-                    ToolTip="Email"
+                    ToolTip="Send Email to ssallem"
                     Click="EmailButton_OnClick"
                     Background="{DynamicResource SecondaryHueMidBrush}"
                     Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
                     Content="{materialDesign:PackIcon Kind=Email, Size=20}"/>
 
-                <Button
+                <!--<Button
                     ToolTip="Feel like you want to make a donation?  It would be gratefully received.  Click the button to donate via Pledgie." 
                     Click="DonateButton_OnClick"
                     Content="{materialDesign:PackIcon Kind=Gift, Size=20}">
@@ -372,8 +248,204 @@
                     <Button.Foreground>
                         <SolidColorBrush Color="{StaticResource GreenPrimary200Foreground}"/>
                     </Button.Foreground>
-                </Button>
+                </Button>-->
             </StackPanel>
         </materialDesign:PopupBox>
+        
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Disabled"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Margin="10 0 0 10">
+            <Grid Margin="0, 0, 10, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <dragablz:TabablzControl x:Name="tabBounds" Grid.Row="1" Grid.RowSpan="2">
+                    <dragablz:TabablzControl.InterTabController>
+                        <dragablz:InterTabController />
+                    </dragablz:TabablzControl.InterTabController>
+                    <!-- In Bound 시작 -->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Foreground="White" Kind="ArchiveArrowDownOutline" Height="24" Width="32" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <TextBlock Foreground="White" FontFamily="Fonts/#Dosis" FontSize="18" FontWeight="Bold"
+                                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}">In Bound</TextBlock>
+                            </StackPanel>
+                        </TabItem.Header>
+
+                        <!--카드 1 시작-->
+                        <materialDesign:Card  Width="Auto" Margin="10 10 10 10" Height="Auto">
+                            <DataGrid x:Name="dataInbound" ItemsSource="{Binding Items1}" CanUserAddRows="False" AutoGenerateColumns="False" 
+                                  HeadersVisibility="All" SelectionMode="Extended" CanUserDeleteRows="False" Style="{StaticResource MaterialDesignDataGrid}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding RuleName}" Header="이름" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True" Width="180" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding RuleProgram}" Header="프로그램" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="280"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Protocol}" Header="프로토콜" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"  Width="100"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding LocalPort}" Header="로컬 포트" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"  Width="120"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding RemotePort}" Header="원격 포트" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="120"/>
+                                    <materialDesign:DataGridTextColumn Header="사용" Binding="{Binding EnableName}" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="true">                                                        
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Apply_True.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="false">                                                        
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Apply_False.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>                                                
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </materialDesign:DataGridTextColumn>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding ActionName}" Header="작업" 
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ActionName}" Value="허용">
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Rule_Allow.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ActionName}" Value="차단">
+                                                        <Setter Property="Text" Value=""/>
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Rule_Block.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </materialDesign:DataGridTextColumn>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Direction}" Visibility="Hidden" Header="IN/OUT" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100"/>
+                                </DataGrid.Columns>
+                                <!--<DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="true">
+                                                <Setter Property="Foreground" Value="GreenYellow"/>
+                                            </DataTrigger>                                            
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>-->
+                            </DataGrid>
+                        </materialDesign:Card>                        
+                    </TabItem>
+                    <!-- Out Bound 시작 -->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Foreground="White" Kind="ArchiveArrowUpOutline" Height="24" Width="32" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                <TextBlock Foreground="White" FontFamily="Fonts/#Dosis" FontSize="18"  FontWeight="Bold"
+                                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}">Out Bound</TextBlock>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <!--카드2 시작-->
+                        <materialDesign:Card  Width="Auto" Margin="10 10 10 10" Height="Auto">
+                            <DataGrid x:Name="dataOutbound" ItemsSource="{Binding Items1}" CanUserAddRows="False" AutoGenerateColumns="False" 
+                                  HeadersVisibility="All" SelectionMode="Extended" CanUserDeleteRows="False" Style="{StaticResource MaterialDesignDataGrid}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding RuleName}" Header="이름" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True" Width="180" />
+                                    <materialDesign:DataGridTextColumn Binding="{Binding RuleProgram}" Header="프로그램" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="280"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Protocol}" Header="프로토콜" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"  Width="100"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding LocalPort}" Header="로컬 포트" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"  Width="120"/>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding RemotePort}" Header="원격 포트" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="120"/>
+                                    <materialDesign:DataGridTextColumn Header="사용" Binding="{Binding EnableName}" EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="true">
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Apply_True.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsEnabled}" Value="false">                                                        
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Apply_False.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </materialDesign:DataGridTextColumn>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding ActionName}" Header="작업" 
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ActionName}" Value="허용">
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Rule_Allow.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ActionName}" Value="차단">
+                                                        <Setter Property="Text" Value=""/>
+                                                        <Setter Property="Background">
+                                                            <Setter.Value>
+                                                                <ImageBrush ImageSource="/Images/Rule_Block.png" Stretch="Uniform"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </materialDesign:DataGridTextColumn>
+                                    <materialDesign:DataGridTextColumn Binding="{Binding Direction}" Visibility="Hidden" Header="IN/OUT" ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True" Width="100"/>
+                                </DataGrid.Columns>
+                                <!--<DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="true">
+                                                <Setter Property="Foreground" Value="GreenYellow"/>
+                                            </DataTrigger>                                            
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>-->
+                            </DataGrid>
+                        </materialDesign:Card>
+                    </TabItem>
+                </dragablz:TabablzControl>                
+                <!--<TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" Margin="20, 0, 0, 0"
+                           TextWrapping="Wrap" FontFamily="Fonts/#Dosis" FontWeight="Bold" Text="Inbound"/>-->
+
+            </Grid>            
+        </ScrollViewer>        
+        
     </Grid>
 </UserControl>
