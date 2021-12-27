@@ -92,11 +92,17 @@
     </ApplicationDefinition>
     <Compile Include="Domain\AnotherCommandImplementation.cs" />
     <Compile Include="Domain\DialogsViewModel.cs" />
+    <Compile Include="Domain\FieldsViewModel.cs" />
     <Compile Include="Domain\Link.cs" />
     <Compile Include="Domain\MainWindowViewModel.cs" />
     <Compile Include="Domain\DialogYesNo.xaml.cs">
       <DependentUpon>DialogYesNo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Domain\AddFwRuleDialog.xaml.cs">
+      <DependentUpon>AddFwRuleDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Domain\NotEmptyValidationRule.cs" />
+    <Compile Include="Domain\PlainMultiValueConverter.cs" />
     <Compile Include="Domain\SampleDialog.xaml.cs">
       <DependentUpon>SampleDialog.xaml</DependentUpon>
     </Compile>
@@ -118,6 +124,10 @@
     <Compile Include="xFirewall.cs" />
     <Compile Include="xFwRules.cs" />
     <Page Include="Domain\DialogYesNo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Domain\AddFwRuleDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

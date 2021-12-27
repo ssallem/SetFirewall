@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="SetFirewall.Domain.AddFwRuleDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:domain="clr-namespace:SetFirewall.Domain" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" d:DesignWidth="350" BorderBrush="#FF673AB7" BorderThickness="2"
+             FontFamily="Dosis" FontWeight="Bold"  FontSize="20" Height="450" Width="350" 
+             Name="uscAddFirewall" Loaded="UserControl_Loaded" >    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <domain:PlainMultiValueConverter x:Key="PlainMultiValueConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>        
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <materialDesign:ColorZone
+                    Padding="16"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth4"
+                    Mode="PrimaryMid"
+                    DockPanel.Dock="Top" Height="59" Grid.Row="0" Grid.ColumnSpan="2">
+            <DockPanel>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Fonts/#Dosis"
+                                   FontWeight="Bold" FontSize="20" Text="방화벽 등록"/>
+            </DockPanel>
+        </materialDesign:ColorZone>
+
+        <materialDesign:PackIcon Grid.Row="1" Grid.Column="0" Kind="Fire" 
+                                 Foreground="{Binding ElementName=txtRuleName, Path=Foreground}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
+        <TextBox x:Name="txtRuleName" wpf:HintAssist.Hint="방화벽 이름" 
+                 wpf:HintAssist.HelperText="정상입니다."
+                 Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 20 0 0" FontSize="18" Grid.Row="1" Grid.Column="1"
+                 wpf:TextFieldAssist.HasClearButton="True">
+            <TextBox.Text>
+                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Grid Grid.Row="2"  Grid.Column="1" Margin="0 20 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <RadioButton x:Name="rdbProgram" Grid.Column="0" GroupName="AddRule" Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="프로그램" Checked="rdbProgram_Checked">
+            </RadioButton>
+            <RadioButton x:Name="rdbPort" Grid.Column="1" GroupName="AddRule" Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="포트" Checked="rdbPort_Checked">
+            </RadioButton>
+        </Grid>
+        <TextBox x:Name="txtFilePath" wpf:HintAssist.Hint="프로그램 경로" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 20 0 0" FontSize="18" Grid.Row="3" Grid.Column="1" wpf:HintAssist.HelperText="정상입니다."
+                 wpf:TextFieldAssist.HasClearButton="True">
+            <TextBox.Text>
+                <Binding Path="Name2" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <domain:NotEmptyFileValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Grid x:Name="grdProtocol" Margin="0 20 0 0" Grid.Row="3" Visibility="Collapsed" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <RadioButton x:Name="rdbProtocolAll" Grid.Column="0" GroupName="AddProtocol" Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="ALL" Checked="rdbProtocol_Checked">
+            </RadioButton>
+            <RadioButton x:Name="rdbProtocolTCP" Grid.Column="1" GroupName="AddProtocol" Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="TCP" Checked="rdbProtocol_Checked">
+            </RadioButton>
+            <RadioButton x:Name="rdbProtocolUDP" Grid.Column="2" GroupName="AddProtocol" Style="{StaticResource MaterialDesignRadioButton}" Tag="True" Content="UDP" Checked="rdbProtocol_Checked">
+            </RadioButton>
+        </Grid>
+        <TextBox x:Name="txtPort" wpf:HintAssist.Hint="포트" Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                 Margin="0 20 0 0" FontSize="18" Grid.Row="4" Grid.Column="1" Visibility="Collapsed" Cursor="IBeam" 
+                 wpf:TextFieldAssist.HasClearButton="True" wpf:HintAssist.HelperText="정상입니다.">
+            <TextBox.Text>
+                <Binding Path="Name3" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <materialDesign:PackIcon Grid.Row="5" Grid.Column="0" Kind="HandOkay" 
+                                 Foreground="{Binding ElementName=txtRuleName, Path=Foreground}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" Margin="0 16 0 0" HorizontalAlignment="Center">
+            <Button x:Name="btnOk" IsDefault="True" Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    FontFamily="Dosis" FontWeight="Bold"  FontSize="20" Click="btnOk_Click">
+                <Button.CommandParameter>
+                    <!--<system:Boolean>True</system:Boolean>-->
+                    <MultiBinding Converter="{StaticResource PlainMultiValueConverter}">
+                        <Binding ElementName="txtRuleName" Path="Text"/>
+                        <Binding ElementName="rdbProgram" Path="IsChecked"/>
+                        <Binding ElementName="txtFilePath" Path="Text"/>
+                        <Binding ElementName="uscAddFirewall" Path="ProtocolType"/>
+                        <Binding ElementName="txtPort" Path="Text"/>
+                        <Binding ElementName="uscAddFirewall" Path="ValidOK"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+                등록
+            </Button>
+            <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
+                    FontFamily="Dosis" FontWeight="Bold"  FontSize="20" Cursor="Hand">
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+                취소
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

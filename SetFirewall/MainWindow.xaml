@@ -216,7 +216,7 @@
 
                     <materialDesign:Snackbar
                         x:Name="MainSnackbar"
-                        MessageQueue="{materialDesign:MessageQueue}"
+                        MessageQueue="{materialDesign:MessageQueue}"                        
                         Grid.Row="1"/>
                 </Grid>
             </DockPanel>

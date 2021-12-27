@@ -7,7 +7,15 @@
              xmlns:domain="clr-namespace:SetFirewall.Domain" xmlns:system="clr-namespace:System;assembly=mscorlib"
              d:DataContext="{d:DesignInstance Type=domain:DialogsViewModel}"
              mc:Ignorable="d"
-             Height="130" Width="300">    
+             Height="130" Width="300" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid Margin="16" Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
@@ -23,13 +31,13 @@
                  FontSize="18" Grid.Row="0"/>-->
         <TextBlock x:Name="txtMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Height="Auto" 
                    Text="삭제 하시겠습니까?" Grid.Column="0" Grid.ColumnSpan="2" 
-                   FontFamily="Dosis" FontWeight="Bold"  FontSize="20" Foreground="Crimson">
+                   FontFamily="Dosis" FontWeight="Bold"  FontSize="20" Foreground="#FFE64061">
             
         </TextBlock>
         <!--<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Margin="0 16 0 0">-->
             <Button IsDefault="True" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="0 0 0 0" Cursor="Hand"
-                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Style="{StaticResource MaterialDesignToolForegroundButton}"
                     FontFamily="Dosis" FontWeight="Bold"  FontSize="20" 
                     Command="{x:Static wpf:DialogHost.CloseDialogCommand}"
                     wpf:DialogHost.DialogClosingAttached="DialogHost_OnDialogClosing" >
@@ -39,7 +47,7 @@
             </Button.CommandParameter>
         </Button>
         <Button IsCancel="True" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" 
-                Margin="0 0 0 0" Style="{StaticResource MaterialDesignFlatButton}"
+                Margin="0 0 0 0" Style="{StaticResource MaterialDesignToolForegroundButton}"
                 FontFamily="Dosis" FontWeight="Bold"  FontSize="20" 
                 Command="{x:Static wpf:DialogHost.CloseDialogCommand}">
                 아니오

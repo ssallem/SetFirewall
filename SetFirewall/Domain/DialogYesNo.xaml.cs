@@ -26,7 +26,17 @@ namespace SetFirewall.Domain
 
         private void DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
         {
-            m_isOk = (bool)eventArgs.Parameter;
+            // m_isOk = (bool)eventArgs.Parameter;
+        }
+
+        private void UserControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            //var paletteHelper = new PaletteHelper();
+            //var theme = paletteHelper.GetTheme();
+
+            //// theme.SetBaseTheme(isDarkTheme ? Theme.Dark : Theme.Light);
+            //theme.SetBaseTheme(Theme.Light);
+            //paletteHelper.SetTheme(theme);
         }
     }
 }

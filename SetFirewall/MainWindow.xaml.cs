@@ -24,10 +24,14 @@ namespace SetFirewall
     /// </summary>
     public partial class MainWindow
     {
-        public static Snackbar Snackbar = new();
+        public static Snackbar Snackbar = new();        
+
         public MainWindow()
         {
             InitializeComponent();
+            ModifyTheme(true);
+
+            Home.CallMsgToForm += new Home.CallMessageToForm(ReceiveMessage);
 
             Task.Factory.StartNew(() => Thread.Sleep(2500)).ContinueWith(t =>
             {
@@ -38,7 +42,7 @@ namespace SetFirewall
 
             Task.Factory.StartNew(() => Thread.Sleep(5000)).ContinueWith(t =>
             {                
-                ModifyTheme(true);
+                ModifyTheme(false);
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
             // DataContext = new MainWindowViewModel(MainSnackbar.MessageQueue!);
@@ -56,6 +60,11 @@ namespace SetFirewall
             }
 
             Snackbar = MainSnackbar;
+        }
+
+        private void ReceiveMessage(string message)
+        {
+            MainSnackbar.MessageQueue?.Enqueue(message);
         }
 
         private void OnCopy(object sender, ExecutedRoutedEventArgs e)

@@ -13,7 +13,7 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <TextBox x:Name="Message" Height="auto" Width="auto"
-                   Margin="0 6 6 0" FontFamily="Dosis" FontWeight="Bold"  FontSize="14" TextWrapping="Wrap"
+                   Margin="0 6 6 0" FontFamily="Dosis" FontWeight="Bold"  FontSize="20" TextWrapping="Wrap"
                    Grid.Row="0" Cursor="IBeam"/>
         <Button Grid.Row="1" 
                 IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"
